@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+      <%include ../head.ejs%>
+<style>
+</style>
+    </head>
+    <body>
+      <%include ../nav.ejs%>
+      <div class="jumbotron">
+		<video width="80%" height="80%" controls="controls">
+		  <source src="/media/p.mp4" type="video/mp4" />
+		  <source src="/media/p.ogg" type="video/ogg" />
+		  <source src="/media/p.webm" type="video/webm" />
+		  <object data="/media/p.flv" width="320" height="240">
+			<embed src="/media/p.flv" width="320" height="240" />
+		  </object>
+		</video>
+      </div>
+	<%include ../scripts.ejs%>
+    <script type="text/javascript">
+	    $(function(){
+	    });
+    </script>
+    <body>
+</html>
+

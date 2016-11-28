@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%include ../head.ejs%></head>
+  <body>
+    <%include ../nav.ejs%>
+      <div class="jumbotron">
+        <div class="container">
+          <h1>贪吃蛇</h1></div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <canvas id="canvas" style="border:10px solid;" width="400" height="400"></canvas>
+            <button id="start">开始</button>
+            <form method="post" action="/score">
+              <label>暱称:
+                <input type="text" name="username" /></label>
+              <label>:
+                <input id="score" type="hdden" name="score" readonly="readonly" /></label>
+              <button id="btnSubmitScore ">提交得分</button>
+            </form>
+          </div>
+          <div class="col-md-4">
+            <h2>得分榜</h2>
+            <ul class="score"></ul>
+          </div>
+        </div>
+      </div>
+      <%include ../scripts.ejs%>
+        <script type="text/javascript" src="/javascripts/snake.js"></script>
+        <script type="text/javascript">$(function() {
+            $('#start').click(function() {
+              //开始游戏
+              Game();
+            });
+          });
+        </script>
+  <body>
+</html>

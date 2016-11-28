@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+      <%include ../head.ejs%>
+<style>
+  .my {
+	  algin:right;
+	  font:130% bold;
+	  color:#000;
+	  background:#eee;
+	  border: 2px solid;
+	  text-align:right;
+	  width: 600px;
+	  padding: 5px 20px;
+	  margin: 10px 10px 0 140px;
+  }
+  .other {
+	  algin:center;
+	  font:160% bold;
+	  color:#fff;
+	  background:#333;
+	  width: 400px;
+	  padding: 15px 20px;
+	  margin: 10px 10px 0 40px;
+	  border-radius: initial;
+  }
+</style>
+    </head>
+    <body>
+      <%include ../nav.ejs%>
+      <div class="jumbotron">
+      </div>
+        <div id="msg">
+        </div>
+        <input type="text" id="m"/>
+        <button id="bSend">Send</button>
+	<%include ../scripts.ejs%>
+        <script type="text/javascript"
+src="https://cdn.socket.io/socket.io-1.4.5.js">
+        </script>
+        <script type="text/javascript">
+	    $(function(){
+		var socket = io();
+		$('#bSend').click(function(){
+		  var msg = $('#m').val();
+		  socket.emit('cltmessage',msg);
+		  $('#m').val('');
+		  $('#msg').append($('<div class="my"></div>').text(msg));
+		});
+		socket.on('srvmessage',function(msg){
+		  $('#msg').append($('<div class="other"></div>').text(msg));
+		});
+
+	     });
+        </script>
+    <body>
+</html>
+

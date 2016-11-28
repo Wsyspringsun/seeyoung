@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	  <%include ../head.ejs%>
+  </head>
+ <body>
+    <%include ../nav.ejs%>
+    <div class="jumbotron">
+      <div class="container">
+        <form style="margin: 40px 0 0 0;" role="form">
+          <input type="text" placeholder="关键字" style="float:left;width:600px;" class="form-control">
+          <button type="submit" class="btn">搜索</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="primaryContent" class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="blog-content" style="box-shadow:3px 3px 29px rgba(0,0,0,1)">
+	</div>
+        <div class="col-md-4">
+          <h2>最新</h2>
+	  <ul>
+	      <% nearly.forEach(function(blog){%>
+	      <li><a href="#" class="blog"
+			      blog-id="<%=blog.url%>"><%=blog.title%></a>&nbsp;&nbsp;
+		      <a href="javascript:void(0)" blog-id="<%=blog.url%>">赞</a>&nbsp;&nbsp;<a href="#">评论</a></li>
+	      <% })  %>
+	  </ul>
+        </div>
+        <div class="col-md-4">
+          <h2>人气</h2>
+	  <ul>
+	      <% nearly.forEach(function(blog){%>
+	      <li><a href="#" class="blog"
+			      blog-id="<%=blog.url%>"><%=blog.title%></a>&nbsp;&nbsp;
+		      <a href="javascript:void(0)" blog-id="<%=blog.url%>">赞</a>&nbsp;&nbsp;<a href="#">评论</a></li>
+	      <% })  %>
+       </div>
+        <div class="col-md-4">
+          <h2>推荐</h2>
+	  <ul>
+	      <% nearly.forEach(function(blog){%>
+	      <li><a href="#" class="blog"
+			      blog-id="<%=blog.url%>"><%=blog.title%></a>&nbsp;&nbsp;
+		      <a href="javascript:void(0)" blog-id="<%=blog.url%>">赞</a>&nbsp;&nbsp;<a href="#">评论</a></li>
+	      <% })  %>
+        </div>
+      </div>
+      <hr>
+
+      <footer>
+      <p>&copy; 源编码 <script>document.write(new Date().getFullYear());</script></p>
+      </footer>
+    </div>
+    <!-- /container -->
+
+
+      <%include ../scripts.ejs%>
+      <script>
+        $(function(){
+            $('.blog').click(function(){
+                var me = $(this);
+                var title = me.text();
+                $.get('blog/GoInstall',function(rlt){
+			/** 
+			var rlt = '<div style="background:#fff;"><span'+
+				' class="glyphicon glyphicon-off"'+
+				' style="position:absolute;right:5;"></span></div>' + rlt;
+			**/
+			var rlt = '<span class="glyphicon glyphicon-off"'+
+				' style="position:absolute;right:5px;top:1px;"></span>' + rlt;
+		
+                    var div = $('.blog-content').html(rlt);
+		    div.children('.glyphicon-off').click(function(){
+			    div.html('');
+		    });
+                });
+            });
+        });
+      </script>
+  </body>
+</html>

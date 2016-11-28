@@ -1,0 +1,60 @@
+extends ../layout
+
+block content
+    h1#title 贪吃蛇
+    hr
+    div.left
+        div
+            canvas#canvas(width="400" height="400")
+            button#start 开始
+        form(method="post" action="/score")
+            label 暱称:
+                input( type="text" name="username")
+            label 得分:
+                input(id="score" type="hdden" name="score" readonly="readonly")
+            button#btnSubmitScore 提交得分
+
+    script(src="javascripts/jquery.js")
+    script(src="https://cdn.socket.io/socket.io-1.4.5.js")
+    script(src="javascripts/mulsnake.js")
+    script.
+        var socket = io();
+        var myId = null;
+        var room = null;
+        var players = {};
+        $(function(){
+            $('#start').click(function() {
+                 //join 
+                 socket.emit('ready');
+            });
+            var events = {
+                'ready':function(data){
+                },
+                'move':function(data){
+                },
+                'score':function(data){
+                },
+                'gameover':function(data){
+                }
+            };
+            socket.on('ready',function(id){
+                myId = id; 
+            });
+            socket.on('start',function(data){
+                //开始游戏
+                players = data.players;
+                for(var id in players){
+                    var player = players[id];
+                    player.snake = new Snake(player.color,player.offset);
+                    console.log(player);
+                }
+                room = data.room;
+                console.log('room:'+room);
+                start();
+            });
+            socket.on('move',function(data){
+              console.log(data.id+':'+data.direction);
+              players[data.id].snake.move(data.direction);
+            });
+        });
+               
