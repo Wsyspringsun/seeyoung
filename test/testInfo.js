@@ -16,20 +16,34 @@ exports.testDb = function(test) {
 	test.ok(infoDb, 'create infoDb err');
 	test.done();
 }
+
+var info = {
+	title: 'ipaji is published',
+	content: 'this is a big date, my ipaji is published.Everybody can publish info on my ipaji'
+};
+
 exports.testCreate = function(test) {
-	var info = {
-		title: 'ipaji is published',
-		content: 'this is a big date, my ipaji is published.Everybody can publish info on my ipaji'
-	};
 	infoDb.create(info,function(err,sql){
+		console.log(info);
 		test.ok(!err, 'insert err:' + err + ';\nsql:' + sql);
 		test.done();
 	});
 }
 exports.testQuery = function(test) {
-	infoDb.query(function(err,rows,sql){
-		test.ok(!err, 'query err:' + err + ';\nsql:' + sql);
-		console.log(rows);
+	infoDb.read(function(err,rows,sql){
+		var r = rows[0];
+		console.log(r);
+		test.ok(r.id == info.id, 'read err:' + err + ';\nsql:' + sql);
+		test.done();
+	});
+}
+exports.testUpdate = function(test) {
+	info.title = 'updated title';
+	info.content = 'updated content';
+	info.overDate = info.overDate ;
+
+	infoDb.update(info,function(err,result,sql){
+		test.ok(result.changedRows==1 ,'update changed not 1:\nsql:'+sql);
 		test.done();
 	});
 }
