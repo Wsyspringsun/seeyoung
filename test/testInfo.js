@@ -1,6 +1,5 @@
 var InfoDb = require('../lib/info.js');
 var mysql = require('mysql');
-var uuid = require('node-uuid');
 
 var db = mysql.createConnection({
 	host: '127.0.0.1',
@@ -23,28 +22,36 @@ var info = {
 };
 
 exports.testCreate = function(test) {
-	infoDb.create(info,function(err,sql){
-		console.log(info);
+	infoDb.create(info, function(err, sql) {
 		test.ok(!err, 'insert err:' + err + ';\nsql:' + sql);
 		test.done();
 	});
 }
 exports.testQuery = function(test) {
-	infoDb.read(function(err,rows,sql){
+	infoDb.read(function(err, rows, sql) {
 		var r = rows[0];
-		console.log(r);
-		test.ok(r.id == info.id, 'read err:' + err + ';\nsql:' + sql);
+		test.ok(r.id == info.id, 'read id:' + r.id + 'info id:' + info.id + ';\nsql:' + sql);
 		test.done();
 	});
 }
 exports.testUpdate = function(test) {
 	info.title = 'updated title';
 	info.content = 'updated content';
-	info.overDate = info.overDate ;
+	info.overDate = info.overDate;
 
-	infoDb.update(info,function(err,result,sql){
-		test.ok(result.changedRows==1 ,'update changed not 1:\nsql:'+sql);
+	infoDb.update(info, function(err, result, sql) {
+		test.ok(result.changedRows == 1, 'update changed not 1:\nsql:' + sql);
+		test.done();
+	});
+}
+exports.testDel = function(test) {
+	infoDb.del(info.id, function(err, result, sql) {
+		test.ok(result.affectedRows == 1, 'del affected not 1:\nsql:' + sql);
 		test.done();
 	});
 }
 
+exports.testEnd = function(test) {
+	db.end();
+	test.done();
+}

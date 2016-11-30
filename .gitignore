@@ -1,3 +1,4 @@
 node_modules
 public/media/*
 ffmpeg
+npm-debug.log

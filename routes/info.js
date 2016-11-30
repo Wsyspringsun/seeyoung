@@ -2,27 +2,53 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 var router = express.Router();
+var InfoDb = require('../lib/info.js');
+var db = require('../lib/db.js');
+require('date-utils');
 
-/*  
-data.private.push({
-    title: 'Go语言环境搭建',
-    good: 4,
-    comment: ['Good ', 'help', 'useful'],
-    url: 'go.json'
-});*/
+var infoDb = new InfoDb(db);
+
 /*create*/
 router.post('/', function(req, res, next) {
-	var json = {title:"hello"};
-	res.json(json);
+	var info = {};
+	info.title = req.body.title;
+	info.createDate = now;
+	info.content = req.body.content;
+	var offdays = new Number(req.body.offdays);
+	if(isNaN(offdays)){
+		offdays = 15;
+	}	
+	info.createDate = now;
+	var now = new Date();
+	var overdate = now.add({
+		days: offdays
+	});
+
+	info.createDate = now;
+	info.overDate = overdate;
+
+	infoDb.create(info, function(err, sql) {
+		var json = {};
+		if (err) {
+			json.result = false;
+			json.data = err+'\nsql:'+sql;
+		} else {
+			json.result = true;
+			json.data = info;
+		}
+		res.json(json);
+	});
 });
 /*read*/
 router.get('/', function(req, res, next) {
-		var data = [];
-	res.render('info/index', data);
+	//infoDb.read(function(err, rows, sql) {
+	//res.json(rows);
+	//});
+	res.render('info');
 });
 /*update*/
 router.post('/:id', function(req, res, next) {
- /*   var id = req.params.id;
+	/*   var id = req.params.id;
     var rootDir = req.app.get('rootDir');
     var dataPath = path.join(rootDir,'/data/blogs/'+id+'.json');
     fs.readFile(dataPath,'utf8',function(err,data){
@@ -31,8 +57,7 @@ router.post('/:id', function(req, res, next) {
     });*/
 });
 /*delete*/
-router.get('/:id', function(req, res, next) {
-});
+router.get('/:id', function(req, res, next) {});
 /*search*/
 
 module.exports = router;
