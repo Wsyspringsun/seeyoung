@@ -52,6 +52,9 @@
       <%include ../scripts.ejs%>
       <script>
         $(function(){
+			$('form#frm_info').submit(function(){
+				e.preventDefault();
+			});	
 				/*
             $('.blog').click(function(){
                 var me = $(this);

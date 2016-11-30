@@ -8,6 +8,13 @@ require('date-utils');
 
 var infoDb = new InfoDb(db);
 
+router.get('/', function(req, res, next) {
+	//infoDb.read(function(err, rows, sql) {
+	//res.json(rows);
+	//});
+	res.render('info');
+});
+
 /*create*/
 router.post('/', function(req, res, next) {
 	var info = {};
@@ -40,12 +47,22 @@ router.post('/', function(req, res, next) {
 	});
 });
 /*read*/
-router.get('/', function(req, res, next) {
-	//infoDb.read(function(err, rows, sql) {
-	//res.json(rows);
-	//});
-	res.render('info');
+router.get('/read', function(req, res, next) {
+	infoDb.read(function(err, rows, sql) {
+		var json = {};
+		if (err) {
+			json.result = false;
+			console.log(err+'\nsql:'+sql);
+			json.data = 'system read err;';
+		} else {
+			json.result = true;
+			json.data = rows;
+		}
+
+		res.json(json);
+	});
 });
+
 /*update*/
 router.post('/:id', function(req, res, next) {
 	/*   var id = req.params.id;
